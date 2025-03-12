@@ -3,7 +3,10 @@ const app = express();
 const port = 4000;
 const mongoose = require('mongoose');
 const NcRna = require('./models/NcRna');
+const cors = require('cors');
 
+app.use(cors());
+app.use(express.json());
 require('dotenv').config();
 const connection_url = process.env.MONGO_DB_URL;
 
@@ -15,6 +18,9 @@ mongoose.connect(connection_url)
     console.log(err);
 }
 );
+app.get('/hello', (req, res) => {
+    res.json({message: 'Hello World!'});
+});
 
 app.get('/lncrna/:seq/disease/:dis', async(req, res) => {
     const seq_id = req.params.seq;
@@ -54,7 +60,10 @@ app.get('/disease/:name', async (req, res) => {
         return element['ncRNA Symbol'];
     }));
 });
-
+app.get('/all', async (req, res) => {
+    data = await NcRna.find({});
+    res.json(data);
+})
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
     }
