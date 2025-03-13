@@ -64,6 +64,13 @@ app.get('/all', async (req, res) => {
     data = await NcRna.find({});
     res.json(data);
 })
+app.get('/lcrna/details/:id', async (req, res) => {
+    const id = req.params.id;
+    data = await NcRna.find({"_id": id});
+    res.json(data);
+}
+);
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
     }
